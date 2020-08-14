@@ -6,5 +6,6 @@ router = routers.DefaultRouter()
 router.register('books', views.BookView)
 
 urlpatterns = [
-    path('', include(router.urls))
+    path('', include(router.urls)),
+    path('db', views.ApiCall.as_view()),
 ]
