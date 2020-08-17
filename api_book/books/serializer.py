@@ -1,7 +1,18 @@
 from rest_framework import serializers
 from .models import Book
 
-class BookSerializer(serializers.ModelSerializer):
+
+class BookSerializer(serializers.HyperlinkedModelSerializer):
+    authors = serializers.StringRelatedField(many=True)
+
     class Meta:
         model = Book
-        fields = ('id', 'title', 'authors', 'published_date', 'categories', 'avarage_rating', 'ratings_count', 'thumbnail')
+        fields = [
+            'title',
+            'authors',
+            'published_date',
+            'average_rating',
+            'ratings_count',
+            'thumbnail',
+
+        ]

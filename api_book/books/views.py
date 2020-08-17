@@ -9,7 +9,7 @@ from .models import Book, Category, Author
 from .serializer import BookSerializer
 
 
-class BookView(viewsets.ModelViewSet):
+class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
@@ -19,8 +19,13 @@ class BookView(viewsets.ModelViewSet):
                 authors__name__in=[
                     a.replace('"', '') for a in self.request.GET.getlist('author')
                 ]).distinct()
+        elif self.request.GET.get('published_date'):
+            return Book.objects.filter(published_date=self.request.GET.get('published_date'))
+        elif self.request.GET.get('sort'):
+            return Book.objects.order_by(self.request.GET.get('sort'))
         else:
             return Book.objects.all()
+
 
 
 class ApiCall(APIView):
@@ -42,7 +47,7 @@ class ApiCall(APIView):
                 book_object, created = Book.objects.update_or_create(
                     title=book['volumeInfo']['title'],
                     published_date=publish_date,
-                    average_rating=book['volumeInfo'].get('averageRating'),
+                    avarage_rating=book['volumeInfo'].get('averageRating'),
                     ratings_count=book['volumeInfo'].get('ratingsCount'),
                     thumbnail=book['volumeInfo']['imageLinks']['thumbnail'],
                 )
@@ -68,14 +73,3 @@ class ApiCall(APIView):
             return Response({
                 'error': "q is required"
             })
-
-"""
-class BooksListView(View):
-    def get(self, request):
-        books = Book.objects.all().order_by('published_date')
-        return render(
-            request,
-            'books/bookslist.html',
-            {'books': books}
-        )
-"""
