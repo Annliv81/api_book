@@ -138,3 +138,4 @@ REST_FRAMEWORK = {
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
+set DISABLE_COLLECTSTATIC=1
