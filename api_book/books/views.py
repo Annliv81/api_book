@@ -47,7 +47,7 @@ class ApiCall(APIView):
                 book_object, created = Book.objects.update_or_create(
                     title=book['volumeInfo']['title'],
                     published_date=publish_date,
-                    avarage_rating=book['volumeInfo'].get('averageRating'),
+                    average_rating=book['volumeInfo'].get('averageRating'),
                     ratings_count=book['volumeInfo'].get('ratingsCount'),
                     thumbnail=book['volumeInfo']['imageLinks']['thumbnail'],
                 )
